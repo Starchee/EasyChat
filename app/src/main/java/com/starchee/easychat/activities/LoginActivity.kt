@@ -33,21 +33,21 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
         login_btn_sign_in.setSize(SignInButton.SIZE_WIDE)
         login_btn_sign_in.setOnClickListener {
-            googleLoginPresenter.startAuthProcess(context = this)
+            googleLoginPresenter.startAuthProcess()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        googleLoginPresenter.handleAuthResponse(requestCode = requestCode,resultCode = resultCode,data = data)
+        googleLoginPresenter.handleAuthResponse(requestCode = requestCode, resultCode = resultCode, data = data)
     }
 
     override fun startActivitiesForResult(intent: Intent, requestCode: Int) {
         startActivityForResult(intent, requestCode)
     }
 
-    override fun showError(error: String) {
-        Toast.makeText(applicationContext, error, Toast.LENGTH_LONG ).show()
+    override fun showMessage(message: Int) {
+        Toast.makeText(applicationContext, getString(message), Toast.LENGTH_LONG ).show()
     }
 
     override fun startChatActivity(user: User) {

@@ -9,6 +9,6 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(value = AddToEndSingleStrategy::class)
 interface LoginView: MvpView {
     fun startActivitiesForResult(intent: Intent, requestCode: Int)
-    fun showError(error: String)
+    fun showMessage(message: Int)
     fun startChatActivity(user: User)
 }

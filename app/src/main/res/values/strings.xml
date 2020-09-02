@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Easy Chat</string>
     <string name="logout">logout</string>
+    <string name="google_login_failure">Google sign in failed</string>
 </resources>
