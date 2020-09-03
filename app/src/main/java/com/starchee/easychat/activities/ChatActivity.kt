@@ -6,18 +6,27 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import com.starchee.easychat.App
 import com.starchee.easychat.R
 import com.starchee.easychat.presenters.ChatPresenter
 import com.starchee.easychat.views.ChatView
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
 class ChatActivity : MvpAppCompatActivity(), ChatView {
 
+    @Inject
     @InjectPresenter
     lateinit var chatPresenter: ChatPresenter
 
+    @ProvidePresenter
+    fun provideChatPresenter() = chatPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as App).appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
     }
@@ -40,7 +49,6 @@ class ChatActivity : MvpAppCompatActivity(), ChatView {
 
     override fun logout() {
         val intent = Intent(this, LoginActivity::class.java)
-        intent.putExtra("logout", true)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
         finish()
