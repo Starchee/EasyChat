@@ -32,4 +32,8 @@ class UserListPresenter @Inject constructor(
                     Log.d(TAG, "Can`t load users", it)
                 })
     }
+
+    fun startChatWithUser(name: String, photo: String){
+        viewState.startChatWithUser(name, photo)
+    }
 }

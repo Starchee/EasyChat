@@ -1,5 +1,6 @@
 package com.starchee.easychat.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 class UserListActivity : MvpAppCompatActivity(), UserListView {
 
-    private val userAdapter = UserAdapter()
+    private lateinit var userAdapter:UserAdapter
 
     @Inject
     @InjectPresenter
@@ -32,6 +33,8 @@ class UserListActivity : MvpAppCompatActivity(), UserListView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_list)
 
+        userAdapter = UserAdapter(userListPresenter)
+
         userListPresenter.loadUsers()
 
         user_list_rv.apply {
@@ -44,5 +47,14 @@ class UserListActivity : MvpAppCompatActivity(), UserListView {
 
     override fun setUser(users: List<User>) {
         userAdapter.setupUsers(userList = users)
+    }
+
+    override fun startChatWithUser(name: String, photo: String) {
+        val intent = Intent(this, PrivateChatActivity::class.java)
+        intent.apply {
+            putExtra("name", name)
+            putExtra("photo", photo)
+        }
+        startActivity(intent)
     }
 }

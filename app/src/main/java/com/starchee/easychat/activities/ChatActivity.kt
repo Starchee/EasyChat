@@ -60,6 +60,8 @@ class ChatActivity : MvpAppCompatActivity(), ChatView {
     }
 
     override fun startUserActivity(){
-        startActivity(Intent(this, UserListActivity::class.java))
+        val intent = Intent(this, UserListActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+        startActivity(intent)
     }
 }

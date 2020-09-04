@@ -4,13 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.starchee.easychat.R
 import com.starchee.easychat.models.User
+import com.starchee.easychat.presenters.UserListPresenter
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.user_list_rv_item.view.*
 
-class UserAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class UserAdapter constructor(
+    private val userListPresenter: UserListPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var sourceList: ArrayList<User> = ArrayList()
     private var usersList: ArrayList<User> = ArrayList()
 
@@ -37,24 +41,27 @@ class UserAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent?.context)
-        val itemView = layoutInflater.inflate(R.layout.users_recycler_item, parent, false)
-        return UsersViewHolder(itemView = itemView)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val itemView = layoutInflater.inflate(R.layout.user_list_rv_item, parent, false)
+        return UsersViewHolder(itemView = itemView, userListPresenter = userListPresenter)
     }
 
     override fun getItemCount(): Int {
         return usersList.count()
     }
 
-    class UsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class UsersViewHolder(itemView: View,
+    private val userListPresenter: UserListPresenter) : RecyclerView.ViewHolder(itemView) {
 
-        private var userCivPhoto: CircleImageView = itemView.findViewById(R.id.user_item_civ_photo)
-        private var userTxtName: TextView = itemView.findViewById(R.id.user_item_txt_name)
+        private var userCivPhoto: CircleImageView = itemView.user_list_rv_item_civ_photo
+        private var userTxtName: TextView = itemView.user_list_rv_item_txt_name
 
 
         fun bind(user: User) {
             Picasso.get().load(user.photo).into(userCivPhoto)
-            userTxtName.text = "${user.name}"
+            userTxtName.text = user.name
+            itemView.setOnClickListener {
+                userListPresenter.startChatWithUser(user.name, user.photo) }
         }
     }
 

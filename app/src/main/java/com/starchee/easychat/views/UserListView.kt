@@ -8,4 +8,5 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(value = AddToEndSingleStrategy::class)
 interface UserListView: MvpView {
     fun setUser(users: List<User>)
+    fun startChatWithUser(name: String, photo: String)
 }
