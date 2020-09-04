@@ -14,4 +14,8 @@ class ChatPresenter @Inject constructor(
         authService.singOut()
         viewState.logout()
     }
+
+    fun addChat(){
+        viewState.startUserActivity()
+    }
 }

@@ -10,6 +10,7 @@ import com.starchee.easychat.App
 import com.starchee.easychat.R
 import com.starchee.easychat.presenters.ChatPresenter
 import com.starchee.easychat.views.ChatView
+import kotlinx.android.synthetic.main.activity_chat.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -29,6 +30,10 @@ class ChatActivity : MvpAppCompatActivity(), ChatView {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
+        chat_fab.setOnClickListener {
+            chatPresenter.addChat()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -52,5 +57,9 @@ class ChatActivity : MvpAppCompatActivity(), ChatView {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
         finish()
+    }
+
+    override fun startUserActivity(){
+        startActivity(Intent(this, UserListActivity::class.java))
     }
 }

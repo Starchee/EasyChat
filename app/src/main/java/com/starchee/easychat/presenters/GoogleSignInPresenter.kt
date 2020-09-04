@@ -36,8 +36,5 @@ class GoogleSignInPresenter @Inject constructor(
                     })
         }
     }
-
-
-
 }
 

@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.starchee.easychat.models.User
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.*
 import javax.inject.Inject
 
 class UserFirebaseDatabase @Inject constructor(
@@ -34,6 +34,28 @@ class UserFirebaseDatabase @Inject constructor(
         }
     }
 
+    fun getAllUsers(): Flowable<List<User>>{
+        var users: MutableList<User> = ArrayList()
+
+
+        return Flowable.create<List<User>>({emitter->
+            userReference.addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach {
+                        var user: User = it.getValue(User::class.java) as User
+                        users.add(user)
+                    }
+                    emitter.onNext(users)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    emitter.onError(error.toException())
+                }
+
+            })
+        }, BackpressureStrategy.LATEST)
+    }
+
     fun saveUserIfNotExist(firebaseUser: FirebaseUser) {
         val query  = userReference.orderByChild("email").equalTo(firebaseUser.email)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
@@ -58,7 +80,6 @@ class UserFirebaseDatabase @Inject constructor(
         return User(
             name = name,
             email = email,
-            photo = photo,
-            phoneNumber = phoneNumber)
+            photo = photo)
     }
 }
